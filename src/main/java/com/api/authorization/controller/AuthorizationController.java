@@ -143,14 +143,14 @@ public class AuthorizationController {
 	public ResponseEntity<List<Users>> getAllUsers(@RequestHeader("Authorization") String token) {
 		log.info("Entering getAllUsers controller method!!!");
 		log.info("Token: {}",token);
-		/*String localToken = token.substring(7);
+		String localToken = token.substring(7);
 		ValidationRespose response = new ValidationRespose();
 		if (null!= localToken && jwtutil.validateToken(localToken)) {
 			response.setValid(true);
 		}
 		log.info(response.toString());
 		if(!response.isValid())return new ResponseEntity<>(new ArrayList<>(),HttpStatus.FORBIDDEN);
-		log.info("Exiting getAllUsers controller method!!!");*/
+		log.info("Exiting getAllUsers controller method!!!");
 		return new ResponseEntity<>(userDataService.getAllUser(), HttpStatus.OK);
 		 
 	}

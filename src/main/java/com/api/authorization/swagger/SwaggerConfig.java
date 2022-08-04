@@ -17,7 +17,7 @@ public class SwaggerConfig {
 	
 	@Bean
 	public Docket api() {
-		log.debug("Docket api SwaggerConfig(class) method called!!!");
+		log.info("Docket api SwaggerConfig(class) method called!!!");
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any()).build();
 	}

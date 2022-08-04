@@ -29,7 +29,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		log.debug("Entering doFilterInternal service method!!!");
+		log.info("Entering doFilterInternal service method!!!");
 		final String authHeadder = request.getHeader("Authorization");
 		String username = null;
 		String jwt = null;
@@ -39,10 +39,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			try {
 				username = jwtUtil.extractUsername(jwt);
 			} catch (Exception e) {
-				log.debug("JWT Token has been tampered or is expired");
+				log.info("JWT Token has been tampered or is expired");
 			}
 		} else {
-			logger.debug("JWT Token does not begin with Bearer String");
+			logger.info("JWT Token does not begin with Bearer String");
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -59,7 +59,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			}
 		}
 		filterChain.doFilter(request, response);
-		log.debug("Exiting doFilterInternal service method!!!");
+		log.info("Exiting doFilterInternal service method!!!");
 	}
 
 }
