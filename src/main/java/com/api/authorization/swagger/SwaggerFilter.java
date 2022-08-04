@@ -12,13 +12,13 @@ public class SwaggerFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		log.debug("Swagger Filter servlet instantiated!!!");
+		log.info("Swagger Filter servlet instantiated!!!");
 	}
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
-		log.debug("Swagger Filter doFilter method called!!!");
+		log.info("Swagger Filter doFilter method called!!!");
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		log.info("Request: {}",servletRequest.toString());
         log.info("Response: {}",servletResponse.toString());
@@ -30,7 +30,7 @@ public class SwaggerFilter implements Filter {
 		
         
 		filterChain.doFilter(servletRequest, servletResponse);
-		log.debug("Swagger Filter doFilter method exited!!!");
+		log.info("Swagger Filter doFilter method exited!!!");
 	}
 
 	@Override

@@ -88,6 +88,7 @@ public class UsersDataService implements UserDetailsService {
 		if (passwordEncoder.matches(password ,user.getPassword())) {
 			log.info("Exiting loadUserByUserName service method!!!");
 			user.setActive(true);
+			user.setLastSeen(LocalDateTime.now());
 			usersDao.save(user);
 			return new User(user.getUserId(), user.getPassword(), new ArrayList<>());
 		} else
@@ -117,7 +118,7 @@ public class UsersDataService implements UserDetailsService {
 		
 	}
 
-	public List<Users> getAllUser() {
+	public List<Users> getAllUser() { 
 		log.info("Entering getAllUser method");
 		log.info("Exiting getAllUser method");
 		return usersDao.findAll();
@@ -128,6 +129,12 @@ public class UsersDataService implements UserDetailsService {
 		log.info("Entering getAllUser method");
 		log.info("Exiting getAllUser method");
 		return usersDao.findById(userId).orElse(null);
+	}
+
+	public List<Users> searchByUserName(String userName) {
+		log.info("Entering searchByUserName service method with name Regex = "+userName);
+		log.info("Exiting searchByUserName service method with name Regex = "+userName);
+		return usersDao.findByUserNameRegex(userName);
 	}
 
 }

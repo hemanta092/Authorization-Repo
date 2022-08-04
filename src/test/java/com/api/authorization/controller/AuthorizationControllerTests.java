@@ -53,7 +53,6 @@ public class AuthorizationControllerTests {
 		loginRequest = new LoginRequest();
 		loginRequest.setUserId("annu.sharma9830@gmail.com");
 		loginRequest.setPassword("annu@116");
-		
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 	}
 
@@ -187,11 +186,11 @@ public class AuthorizationControllerTests {
 				.content(new ObjectMapper().writeValueAsString(loginRequest))).andReturn();
 		String response = mvcResult.getResponse().getContentAsString();
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> jsonMap = new HashMap<String, String>();
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
 		// convert JSON string to Map
-		jsonMap = mapper.readValue(response, new TypeReference<Map<String, String>>() {
+		jsonMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
 		});
-		return jsonMap.get("authToken");
+		return (String)jsonMap.get("authToken");
 	}
 	
 

@@ -45,7 +45,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		log.debug("Entering HttpSecurity configure method!!!");
-		http.csrf().disable().authorizeRequests().antMatchers("/auth/login","/auth/register","/auth/get","/auth/forget","/auth/updatePassword").permitAll().anyRequest().authenticated()
+		http.csrf().disable().authorizeRequests().antMatchers("/auth/login","/auth/register","/auth/forget","/auth/updatePassword").permitAll().anyRequest().authenticated()
 				.and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

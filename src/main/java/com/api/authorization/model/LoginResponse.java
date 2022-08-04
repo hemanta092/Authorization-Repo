@@ -1,5 +1,7 @@
 package com.api.authorization.model;
 
+import com.api.authorization.entity.Users;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,6 @@ import lombok.ToString;
 public class LoginResponse {
 	private String authToken;
 	private String userId;
+	private String userName;
 
 }

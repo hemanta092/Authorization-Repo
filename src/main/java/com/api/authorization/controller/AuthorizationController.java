@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin
 public class AuthorizationController {
 	
 	@Autowired
@@ -48,7 +49,9 @@ public class AuthorizationController {
 		final UserDetails userdetails = userDataService.loadUserByUsername(userLoginCredentials.getUserId(),
 				userLoginCredentials.getPassword());
 		log.info("Exiting login controller method!!!");
-		return new ResponseEntity<>(new LoginResponse(jwtutil.generateToken(userdetails),userLoginCredentials.getUserId()), HttpStatus.OK);
+		String token = jwtutil.generateToken(userdetails);
+		Users user = userDataService.getuserByUserId(userLoginCredentials.getUserId());
+		return new ResponseEntity<>(new LoginResponse(token,userLoginCredentials.getUserId(),user.getFirstName()+" "+user.getLastName()), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/register")
@@ -149,6 +152,24 @@ public class AuthorizationController {
 		if(!response.isValid())return new ResponseEntity<>(new ArrayList<>(),HttpStatus.FORBIDDEN);
 		log.info("Exiting getAllUsers controller method!!!");
 		return new ResponseEntity<>(userDataService.getAllUser(), HttpStatus.OK);
+		 
+	}
+	
+	@GetMapping(value="/searchByUserName/{userName}")
+	public ResponseEntity<List<Users>> searchByUserName(@RequestHeader("Authorization") String token,
+			@PathVariable (name ="userName") String userName) {
+		log.info("Entering searchByUserName controller method!!!");
+		log.info("Token: {}",token);
+		String localToken = token.substring(7);
+		ValidationRespose response = new ValidationRespose();
+		if (null!= localToken && jwtutil.validateToken(localToken)) {
+			response.setValid(true);
+		}
+		log.info(response.toString());
+		if(!response.isValid())return new ResponseEntity<>(new ArrayList<>(),HttpStatus.FORBIDDEN);
+		log.info("Exiting searchByUserName controller method!!!");
+		userName = userName.replaceAll("\\s", "").toLowerCase();
+		return new ResponseEntity<>(userDataService.searchByUserName(userName), HttpStatus.OK);
 		 
 	}
 
